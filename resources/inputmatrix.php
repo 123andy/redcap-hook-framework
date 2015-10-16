@@ -15,7 +15,7 @@ hook_log("Starting $term for project $project_id", "DEBUG");
 ///////////////////////////////
 //	Enable hook_functions and hook_fields for this plugin (if not already done)
 if (!isset($hook_functions)) {
-	$file = HOOK_PATH_ROOT . 'resources/init_hook_functions.php';
+	$file = HOOK_PATH_FRAMEWORK . 'resources/init_hook_functions.php';
 	if (file_exists($file)) {
 		include_once $file;
 		
@@ -77,7 +77,7 @@ $(document).ready(function() {
 			var real_tr = $("tr[sq_id='" + th_label + "']");
 			if ($(real_tr).size()) {
 				// Get the label
-				var real_label = $("td.label:not(.quesnum)", $(real_tr));
+				var real_label = $("td.label:not(.quesnum):not(.questionnum)", $(real_tr));
 				// Move the label into the table and add a 'label' class for rendering
 				$(th).html($(real_label.contents()));
 			}
@@ -104,8 +104,12 @@ $(document).ready(function() {
 					var type = $(trInputs).prop('type');
 					
 					//limit width of inputs
-					if (type=='input') $(trInputs).css('width',50);
-
+					//if (type=='text') $(trInputs).css('width',50);
+					
+					if (type=='text') $(trInputs).removeAttr('size');
+					//console.log(type);
+					//console.log(trInputs);
+					
 					//limit width of inputs
 					if (type=='textarea') $(trInputs).css('width','95%');
 					

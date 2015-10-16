@@ -56,7 +56,7 @@ hook_log("Starting $term for project $project_id", "DEBUG");
 ///////////////////////////////
 //	Enable hook_functions and hook_fields for this plugin (if not already done)
 if (!isset($hook_functions)) {
-	$file = HOOK_PATH_ROOT . 'resources/init_hook_functions.php';
+	$file = HOOK_PATH_FRAMEWORK . 'resources/init_hook_functions.php';
 	if (file_exists($file)) {
 		include_once $file;
 		
@@ -118,7 +118,7 @@ $(document).ready(function() {
 				// Check for label option
 				if (option == 'label') {
 					//Only copying the label
-					var real_label = $("td.label:not(.quesnum) td:first", $(real_tr));
+					var real_label = $("td.label:not(.quesnum):not(.questionnum) td:first", $(real_tr));
 					
 					// COPY IT to the td cell
 					$(this).html($(real_label).clone()).addClass('shazam_label');
@@ -202,7 +202,7 @@ function getFieldLabel(field_name) {
 	var real_tr = $("tr[sq_id='" + field_name + "']");
 	if ($(real_tr).size()) {
 		// Get the label
-		var real_label = $("td.label:not(.quesnum) td:first", $(real_tr));
+		var real_label = $("td.label:not(.quesnum):not(.questionnum) td:first", $(real_tr));
 		// Move the label into the table and add a 'label' class for rendering
 		//$(th).html($(real_label.contents()));
 	}

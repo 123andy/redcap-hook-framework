@@ -57,12 +57,10 @@ require_once('hooks_common.php');
 // redcap_add_edit_records_page (REDCap >= 6.8.0)
 function redcap_add_edit_records_page ($project_id, $instrument, $event_id) {
 	// Example use of hook_log to track time to execute a hook:
-	$hook_start_time = microtime(true);
-	
+	//$hook_start_time = microtime(true);
 	$hook_event = __FUNCTION__;
 	foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
-
-	hook_log(" - $hook_event took " . hook_exec_time($hook_start_time), 'DEBUG');
+	//hook_log(" - $hook_event took " . hook_exec_time($hook_start_time), 'DEBUG');
 }
 
 

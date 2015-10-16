@@ -17,7 +17,7 @@ hook_log("Starting $term for project $project_id", "DEBUG");
 ///////////////////////////////
 //	Enable hook_functions and hook_fields for this plugin (if not already done)
 if (!isset($hook_functions)) {
-	$file = HOOK_PATH_ROOT . 'resources/init_hook_functions.php';
+	$file = HOOK_PATH_FRAMEWORK . 'resources/init_hook_functions.php';
 	if (file_exists($file)) {
 		include_once $file;
 		
@@ -35,12 +35,6 @@ if (!isset($hook_functions[$term])) {
 }
 //////////////////////////////
 
-
-// See if the term defined in this hook is used on this page
-if (!isset($hook_functions[$term])) {
-	hook_log ("Skipping $term on $instrument of $project_id - not used.", "DEBUG");
-	return;
-}
 
 # Step 1 - Create array of fields to hide and inject
 //$startup_vars = array();

@@ -81,8 +81,9 @@ function hook_log($message, $type = 'INFO', $prefix = '') {
 		//echo "type: $type";
 		
 		// Get calling file using php backtrace to help label where the log entry is coming from
-		$calling_file = debug_backtrace()[0]['file'];
-		$calling_function = debug_backtrace()[3]['function'];
+		$bt = debug_backtrace();
+		$calling_file = $bt[0]['file'];
+		$calling_function = $bt[3]['function'];
 		
 		// Convert arrays/objects into string for logging
 		if (is_array($message)) {

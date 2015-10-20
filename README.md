@@ -26,9 +26,9 @@ andy123$ mkdir hooks
 andy123$ cd hooks
 andy123$ pwd
 /var/www/redcap/hooks
-andy123$ git clone git@github.com/redcap-hook-framework.git
+andy123$ git clone git@github.com/123andy/redcap-hook-framework.git
 Cloning into 'redcap-hook-framework'...
 andy123$ mv redcap-hook-framework framework
 ```
-3. In your redcap control center, point to the redcap_hooks.php file.  In the example above, the path would be `/var/www/redcap/hooks/framework/redcap_connect.php`
-4. Create the 'server' folder inside your hooks folder if it doesn't already exist.  The reason for breaking this into a separate folder is so that you can version this separaetly from the framework files.
+3. In your redcap control center, point to the redcap_hooks.php file.  In the example above, the path would be `/var/www/redcap/hooks/framework/redcap_hooks.php`
+4. Create the 'server' folder inside your hooks folder if it doesn't already exist.  The reason for breaking this into a separate folder is so that you can version this separately from the framework files.

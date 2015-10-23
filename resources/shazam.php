@@ -105,7 +105,7 @@ $(document).ready(function() {
 		
 		// Go through all elements for class .shazam for replacments
 		$('td.label .shazam',tr).each(function() {
-			var nodeValue = trim(this.innerText);
+			var nodeValue = trim($(this).text());
 			var matches = nodeValue.split(':');
 			var field = matches[0];
 			var option = matches[1];

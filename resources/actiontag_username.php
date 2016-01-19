@@ -12,10 +12,14 @@
         Luke Stevens, Murdoch Childrens Research Institute, to work with hooks framework by 
         Andy Martin
         Stanford University
+        https://github.com/123andy/redcap-hook-framework
 
 
         To use actiontag_username as a global hook include the following block 
-        in global/global_hooks.php
+        in server/global/global_hooks.php
+
+        To use actiontag_username as a project-level hook for project X include 
+        the following block in server/pidX/custom_hooks.php
 
 if ($hook_event == 'redcap_data_entry_form' || $hook_event == 'redcap_survey_page') {
 
@@ -23,13 +27,12 @@ if ($hook_event == 'redcap_data_entry_form' || $hook_event == 'redcap_survey_pag
         // ...
        
 	// INCULDE @USERNAME action tag
-	$file = HOOK_PATH_ROOT . "resources/actiontag_username.php";
+	$file = HOOK_PATH_FRAMEWORK . "resources/actiontag_username.php";
 	if (file_exists($file)) {
 		include_once $file;
 	} else {
 		hook_log ("Unable to include $file for project $project_id while in " . __FILE__);
 	}
-	print $script;
 }
 
 **/
@@ -40,7 +43,7 @@ hook_log("Starting $term for project $project_id", "DEBUG");
 ///////////////////////////////
 //	Enable hook_functions and hook_fields for this plugin (if not already done)
 if (!isset($hook_functions)) {
-	$file = HOOK_PATH_ROOT . 'resources/init_hook_functions.php';
+	$file = HOOK_PATH_FRAMEWORK . 'resources/init_hook_functions.php';
 	if (file_exists($file)) {
 		include_once $file;
 		

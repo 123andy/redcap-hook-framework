@@ -1,9 +1,7 @@
 <?php
 	
 /**
-
 	This is a hook utility function that allows the rearrangement of input elements on a page, for example in a html table of a descriptive field.
-
 	Currently, each elemnt you wish to pipe a field into should be 
 	
 	<span class='shazam'>field_name</span> will move the field_name input into this span
@@ -47,12 +45,9 @@
 	
 	Andrew Martin
 	Stanford University
-
 **/
-
 $term = '@SHAZAM';
 hook_log("Starting $term for project $project_id", "DEBUG");
-
 ///////////////////////////////
 //	Enable hook_functions and hook_fields for this plugin (if not already done)
 if (!isset($hook_functions)) {
@@ -66,15 +61,12 @@ if (!isset($hook_functions)) {
 		hook_log ("ERROR: In Hooks - unable to include required file $file while in " . __FILE__);
 	}
 }
-
 // See if the term defined in this hook is used on this page
 if (!isset($hook_functions[$term])) {
 	hook_log ("Skipping $term on $instrument of $project_id - not used.", "DEBUG");
 	return;
 }
 //////////////////////////////
-
-
 ?>
 
 <script type='text/javascript'>
@@ -104,7 +96,7 @@ $(document).ready(function() {
 		$(t).siblings('br').remove();
 		
 		// Go through all elements for class .shazam for replacments
-		$('td.label .shazam',tr).each(function() {
+		$('td.labelrc .shazam',tr).each(function() {
 			var nodeValue = trim($(this).text());
 			var matches = nodeValue.split(':');
 			var field = matches[0];
@@ -118,7 +110,7 @@ $(document).ready(function() {
 				// Check for label option
 				if (option == 'label') {
 					//Only copying the label
-					var real_label = $("td.label:not(.quesnum):not(.questionnum) td:first", $(real_tr));
+					var real_label = $("td.labelrc:not(.quesnum):not(.questionnum) td:first", $(real_tr));
 					
 					// COPY IT to the td cell
 					$(this).html($(real_label).clone()).addClass('shazam_label');
@@ -156,7 +148,7 @@ $(document).ready(function() {
 		
 		// Look for shazam-mirror-visibility
 		// This feature allows you to make a DOM element mirror the visibility of another element.
-		$('td.label *[shazam-mirror-visibility]', tr).each(function() {
+		$('td.labelrc *[shazam-mirror-visibility]', tr).each(function() {
 			//console.log ('dependent element');
 			//console.log(this);
 			var mirrored_element = this;
@@ -196,13 +188,12 @@ $(document).ready(function() {
 		
 	});
 });
-
 function getFieldLabel(field_name) {
 	// Search for a tr element with the id from the th cell
 	var real_tr = $("tr[sq_id='" + field_name + "']");
 	if ($(real_tr).size()) {
 		// Get the label
-		var real_label = $("td.label:not(.quesnum):not(.questionnum) td:first", $(real_tr));
+		var real_label = $("td.labelrc:not(.quesnum):not(.questionnum) td:first", $(real_tr));
 		// Move the label into the table and add a 'label' class for rendering
 		//$(th).html($(real_label.contents()));
 	}
@@ -216,7 +207,6 @@ function getFieldLabel(field_name) {
 //		$(th).addClass('label');
 //	}
 }
-
 // Parse text for fields / options
 // \[(?<field>[a-z\d_]+)(?:\:)?(?<option>[a-z\d_]+)?\]
 function parseFieldOptions(obj) {
@@ -245,8 +235,8 @@ function parseFieldOptions(obj) {
 	}
 	//return match;
 }
-
 </script>
 <style type='text/css'>
 	.neverDisplay {display:none;}
+        .choicevert0 {width:0 !important} // LS added to fix horizontal line problem in Firefox
 </style>

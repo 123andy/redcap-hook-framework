@@ -27,8 +27,8 @@
 		
 		Method 1: A 'master' hooks file exists for global and each project.  Each file can 'catch' all hook function calls and use
 			simple if-then syntax to decide which events to process.  These files should be located at
-			hooks/sever/global/global_hooks.php
-			hooks/sever/pidxxx/custom_hooks.php
+			hooks/server/global/global_hooks.php
+			hooks/server/pidxxx/custom_hooks.php
 		
 		Method 2: A custom hook file for each hook function (named the same as the hook function itself).  Examples include
 			hooks/server/global/redcap_custom_verify_username.php

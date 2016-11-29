@@ -92,6 +92,22 @@ function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id
 }
 
 
+// redcap_every_page_top (REDCap >= 6.14.0)
+function redcap_every_page_top($project_id)
+{
+        $hook_event = __FUNCTION__;
+        foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
+}
+
+
+// redcap_every_page_before_render (REDCap >= 6.14.0)
+function redcap_every_page_before_render($project_id)
+{
+        $hook_event = __FUNCTION__;
+        foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
+}
+
+
 // redcap_project_home_page (REDCap >= 6.9.0)
 function redcap_project_home_page($project_id) {
 	$hook_event = __FUNCTION__;

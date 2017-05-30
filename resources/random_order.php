@@ -62,7 +62,9 @@ $.fn.randomize = function(selector){
 $(document).ready(function() {
 	var fields = <?php print json_encode($startup_vars) ?>;
 	//console.log(fields);
-	
+
+    matrices = {}; // Object();
+
 	// Loop through each field_name
 	$.each(fields, function(field_name,params) {
 		// Get parent tr for table
@@ -77,7 +79,28 @@ $(document).ready(function() {
 		
 		// For radios and checkboxes, the options are stored in these classes
 		var inputs = $('.frmrd,.frmrdh,.choicevert,.choicehoriz',tr);
-		
+
+        // Check if this is part of an input matrix - if so, create an array where key is matrix group and values are fields to randomize
+        if ( $(tr).is('[mtxgrp]') ) {
+
+            var mtxgrp = $(tr).attr('mtxgrp');
+            var matrix_trs = $('tr[mtxgrp="' + mtxgrp + '"][sq_id]');
+            var previous_tr = $(matrix_trs[0]).prev();
+
+            // Don't re-randomize a matrix group
+            if ( $(previous_tr).hasClass("randomized") ) return true;
+
+            // Wrap the elements in a div to prevent randomizing other siblings
+            $(matrix_trs).sort(
+                function(){
+                    return Math.round(Math.random()) - 0.5;
+                }
+            ).detach().insertAfter(previous_tr);
+
+            // Log randomization
+            $(previous_tr).addClass("randomized");
+        }
+
 		if ( $(inputs).length) {
 			
 			// Find if last option is other - if so remove it from randomization
@@ -100,11 +123,9 @@ $(document).ready(function() {
 			$(inputs).parent().append(lastInput);
 		}
 		
-		// If it is a dropdown
-		// This one is broken - needs to be fixed
+		// If it is a select/dropdown
 		var select = $('select',tr);
 		if ( $(select).length ) {
-			//console.log ("DROPDOWN");
 			// Strip off the first (blank) option to keep it at the top
 			var opt1 = $('option:first', select);
 			$(opt1).detach();
@@ -130,6 +151,5 @@ $(document).ready(function() {
 			}
 		}
 	});
-
 });
 </script>

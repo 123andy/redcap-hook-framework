@@ -1,56 +1,56 @@
 <?php
 
 /**
+ *
+ * This is a hook utility function that allows the rearrangement of input elements on a page, for example in a html table of a descriptive field.
+ *
+ * Version 2 differes from the predecessor in that it stores configurations in the log - the actual html and css is NOT in the data dictionary.
+ *
+ * Currently, each elemnt you wish to pipe a field into should be
+ *
+ * <span class='shazam'>field_name</span> will move the field_name input into this span
+ * <span class='shazam'>field_name:label</span> will just copy the label for the field called field_name and not the actual inputs.
+ *
+ * If you want an element to mirror the visibility of another REDCap field, you can do:
+ * <span shazam-mirror-visibility=field_name>This will appear or hide with field_name</span>
+ *
+ * Example:
+ *
+ * A descriptive field that contains the following HTML in the label and '@SHAZAM' in the field annotation box
+ *
+ *    <table style='width:100%; table-layout:fixed;border-collapse: collapse;'>
+ *      <tr>
+ *           <th style='width:16%;'></th
+ *           <th style='width:16%;'><b>Dose</b></th>
+ *           <th style='width:16%;'><b>Freq</b></th>
+ *           <th style='width:16%;'><b>Route</b></th>
+ *           <th style='width:32%;'><b>Totals</b></th>
+ *       </tr>
+ *       <tr shazam-mirror-visibility='dopa_dose' style='border-top: 1px dotted #ccc;'>
+ *           <td><b>Dopamine</b></td>
+ *           <td class='shazam'>dopa_dose</td>
+ *           <td class='shazam'>dopa_freq</td>
+ *           <td class='shazam'>dopa_route</td>
+ *           <td>
+ *               <table style='width:100%'>
+ *                   <tr>
+ *                       <td class='shazam'>dopa_total_daily</td>
+ *                       <td><span class='note'>mg/day</span></td>
+ *                   </tr>
+ *                   <tr>
+ *                       <td class='shazam'>dopa_total_weight</td>
+ *                       <td><span class='note'>mg/kg/day</span></td>
+ *                   </tr>
+ *               </table>
+ *           </td>
+ *       </tr>
+ *   </table>
+ *
+ * Andrew Martin
+ * Stanford University
+*/
 
-    This is a hook utility function that allows the rearrangement of input elements on a page, for example in a html table of a descriptive field.
-
-    Currently, each elemnt you wish to pipe a field into should be
-
-    <span class='shazam'>field_name</span> will move the field_name input into this span
-    <span class='shazam'>field_name:label</span> will just copy the label for the field called field_name and not the actual inputs.
-
-    If you want an element to mirror the visibility of another REDCap field, you can do:
-    <span shazam-mirror-visibility=field_name>This will appear or hide with field_name</span>
-
-
-    Example:
-
-    A descriptive field that contains the following HTML in the label and '@SHAZAM' in the field annotation box
-
-    <table style='width:100%; table-layout:fixed;border-collapse: collapse;'>
-        <tr>
-            <th style='width:16%;'></th
-            <th style='width:16%;'><b>Dose</b></th>
-            <th style='width:16%;'><b>Freq</b></th>
-            <th style='width:16%;'><b>Route</b></th>
-            <th style='width:32%;'><b>Totals</b></th>
-        </tr>
-        <tr shazam-mirror-visibility='dopa_dose' style='border-top: 1px dotted #ccc;'>
-            <td><b>Dopamine</b></td>
-            <td class='shazam'>dopa_dose</td>
-            <td class='shazam'>dopa_freq</td>
-            <td class='shazam'>dopa_route</td>
-            <td>
-                <table style='width:100%'>
-                    <tr>
-                        <td class='shazam'>dopa_total_daily</td>
-                        <td><span class='note'>mg/day</span></td>
-                    </tr>
-                    <tr>
-                        <td class='shazam'>dopa_total_weight</td>
-                        <td><span class='note'>mg/kg/day</span></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-
-    Andrew Martin
-    Stanford University
-
-**/
-
-$term = '@SHAZAM';
+$term = '@SHAZAM2';
 hook_log("Starting $term for project $project_id", "DEBUG");
 
 ///////////////////////////////
@@ -75,22 +75,61 @@ if (!isset($hook_functions[$term])) {
 //////////////////////////////
 
 
+// SEARCH THE LOG FOR THE REQUIRED CONFIGURATIONS
+include_once HOOK_PATH_FRAMEWORK . "../../redcap_connect_extensions.php";
+include_once HOOK_PATH_FRAMEWORK . "../../plugins/shazam/common.php";
+include_once HOOK_PATH_FRAMEWORK . "../../plugins/shazam/log_store_common.php";
+
+
+hook_log("hook_functions: " . print_r($hook_functions,true), "DEBUG");
+
+
+$shazamParams = array();
+
+foreach($hook_functions[$term] as $field_name => $data) {
+
+//    hook_log("Field: $field_name","DEBUG");//ShazamParams: " . print_r($shazamParams,true), "DEBUG");
+
+    // Try to load the parameters
+    $tag = "Shazam2 [" . $field_name . "]";
+    $ls = new LogStore($project_id, $tag);
+    $ls->load();
+    $params = $ls->data;
+    $shazamParams[] = array(
+        'field_name' => $field_name,
+        'html' => $params['html']
+    );
+
+    if (!empty($params['css'])) {
+        print "<style type='text/css'>" . $params['css'] . "</style>";
+    }
+    if (!empty($params['javascript'])) {
+        print "<script type='text/javascript'>" . $params['javascript'] . "</script>";
+    }
+}
+
 
 ?>
 
 <script type='text/javascript'>
 $(document).ready(function() {
-    var shazamFields = <?php print json_encode(array_keys($hook_functions[$term])); ?>;
+    var shazamFields = <?php print json_encode($shazamParams); ?>;
+
     //console.log("Shazam Fields", shazamFields);
 
     // Loop through each field_name
-    $(shazamFields).each(function(i, field_name) {
+    $(shazamFields).each(function(i, obj) {
+        var field_name = obj.field_name;
+        var html_content = obj.html;
+        //console.log(obj);
         //console.log('i: ' + i);console.log(field_name);
 
         // Get parent tr for table
         var tr = $('tr[sq_id="' + field_name + '"]');
-        //console.log('tr');console.log(tr);
 
+        // Add shazam2 class to tr
+        $(tr).addClass('shazam-row');
+        
         // Hide the input if it exists
         $('input[name="' + field_name + '"]', tr).hide();
 
@@ -98,14 +137,16 @@ $(document).ready(function() {
         var note = $('div.note', tr);
         $(note).text($(note).text().replace('<?php echo $term ?>', ''));
 
-        // Get table in label
-        var t = $('td.labelrc table', tr);
+        // Get the last label td to inject the table
+        var t = $('td.labelrc:last-child', tr);
 
-        // Remove the br's that REDCap inserts before the table
-        $(t).siblings('br').remove();
+        console.log(t, "t");
+
+        // Set the html according to the parameters
+        $(t).html( html_content );
 
         // Go through all elements for class .shazam for replacments
-        $('td.labelrc .shazam',tr).each(function() {
+        $('.shazam', t).each(function() {
             var nodeValue = trim($(this).text());
             var matches = nodeValue.split(':');
             var field = matches[0];
@@ -113,6 +154,7 @@ $(document).ready(function() {
             //console.log ('Field: ' + field);
             //console.log ('Option: ' + option);
 
+            // Find the 'real tr' for the field to be relocated
             var real_tr = $("tr[sq_id='" + field + "']");
             // Make sure field is present on page
             if ($(real_tr).size()) {
@@ -124,6 +166,7 @@ $(document).ready(function() {
                     // COPY IT to the td cell
                     $(this).html($(real_label).clone()).addClass('shazam_label');
                 } else {
+                    // MOVE IT
                     var real_data = $("td.data", $(real_tr));
                     if (! $(real_data).size()) real_data = $("td:last", $(real_tr)); // changed to last to handle left alignment
                     //var trInputs = $(":input", $(real_tr)).parentsUntil('td.data');
@@ -141,27 +184,17 @@ $(document).ready(function() {
                         });
 
                         // Move reset buttons to left
-                        var r = $("a", $(real_data)).filter(function(index) {
-                            return $(this).text() === "reset";
-                        }).parent().css('text-align','left');
+                        var r = $("a", $(real_data)).filter(function(index) { return $(this).text() === "reset"; }).parent().css('text-align','left');
                         //console.log (r);	 	//.css('text-align','left');
 
                         // Move it to the td cell
                         $(this).html($(real_data).children());
 
                         // Hide the source TRs. (two methods here)
-                        // $(real_tr).css('display','none'); // This doesn't work because if
-                        // branching turns it back on it doesn't re-hide it again.
+                        //$(real_tr).css('display','none');
+                        $(real_tr).css('position','absolute').css('left','-1000px');
 
-                        // This method below was causing some issues with mobile display after the bootstrap so I switched back..
-                        // I think there are still some issues here
-                        //$(real_tr).css('position','absolute').css('left','-1000px');
-
-                        // Adding this class will keep the tr out of display, but we can still see if it is visible to mirror branching.
-                        $(real_tr).addClass('shazamDoNotDisplay'); //css('display','none');
                     }
-
-
                 }
             }
         });
@@ -177,7 +210,7 @@ $(document).ready(function() {
 
             // Make sure field is present on page
             if ($(real_tr).size()) {
-                // Do an initial sync of the visibilty
+                                // Do an initial sync of the visibilty
                 if ($(real_tr).is(':visible')) {
                     $(mirrored_element).show();
                 } else {
@@ -214,7 +247,7 @@ function getFieldLabel(field_name) {
     var real_tr = $("tr[sq_id='" + field_name + "']");
     if ($(real_tr).size()) {
         // Get the label
-        var real_label = $("td.labelrc:not(.quesnum):not(.questionnum) td:first", $(real_tr));
+        var real_label = $("td.label:not(.quesnum):not(.questionnum) td:first", $(real_tr));
         // Move the label into the table and add a 'label' class for rendering
         //$(th).html($(real_label.contents()));
     }
@@ -260,10 +293,6 @@ function parseFieldOptions(obj) {
 
 </script>
 <style type='text/css'>
+    .neverDisplay {display:none;}
     .choicevert0 {width:0 !important}
-    .shazamDoNotDisplay {
-        position:absolute;
-        z-index: -1;
-
-    }
 </style>

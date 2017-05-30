@@ -104,10 +104,18 @@ $startup_vars = $hook_functions[$term];
 			$(otherCheckedItems).each(function(){
 				labels.push($(this).parent().text().trim());
 			});
-			var content = "The option, <b>" + notaText + "</b>, can only be selected by itself.<br><br>Press <b>OK</b> to uncheck the other selected option(s) listed below:<div style='padding:5px 20px;'>" + labels.join(',<br>') + "</div>Or, press <b>MORE THAN 1</b> to allow for multiple selections.";
+			var content = "This selection will clear your previous entries.  Are you sure?";
+
+			// Is this the NOTA box?
+			var isNota = $(this).attr('code') == notaValue;
 			var undo_js = "notaUpdate('" + field + "','"+notaValue+"', false)";
 			var accept_js = "notaUpdate('" + field + "','"+notaValue+"', true)";
-			simpleDialog(content, "Incompatible Checkbox Selection", null, 400, accept_js, "OK", undo_js, "MORE THAN 1");
+			if (isNota) {
+				simpleDialog(content, "Incompatible Checkbox Selection", null, 400, accept_js, "OK", undo_js, "CANCEL");
+			} else {
+				// Undo the NOTA box automatically
+				notaUpdate(field,notaValue,false);
+			}
 		}
 	}
 </script>

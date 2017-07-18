@@ -77,13 +77,13 @@ $(document).ready(function() {
 			var real_tr = $("tr[sq_id='" + th_label + "']");
 			if ($(real_tr).size()) {
 				// Get the label
-				var real_label = $("td.label:not(.quesnum):not(.questionnum)", $(real_tr));
+				var real_label = $("td.labelrc:not(.quesnum):not(.questionnum)", $(real_tr));
 				// Move the label into the table and add a 'label' class for rendering
 				$(th).html($(real_label.contents()));
 			}
 			
 			if (th_label.length > 0) {
-				$(th).addClass('label');
+				$(th).addClass('labelrc');
 			}
 		});
 	

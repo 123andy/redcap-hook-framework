@@ -101,7 +101,7 @@ function redcap_every_page_top($project_id)
 
 
 // redcap_every_page_before_render (REDCap >= 6.14.0)
-function redcap_every_page_before_render($project_id)
+function redcap_every_page_before_render($project_id = null)
 {
         $hook_event = __FUNCTION__;
         foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;

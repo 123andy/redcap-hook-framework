@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Shazam howto guide</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1><span class="glyphicon glyphicon-info-sign"></span> How to use the shazam hook</h1>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Purpose
+                </div>
+                <div class="panel-body">
+                    This hook allows you to rearrange the input elements on a page, for example in a HTML table of a descriptive field.
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Prerequisites
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        <li>A basic understanding of HTML is required to rearrange fields in an <a href="https://www.w3schools.com/html/html_tables.asp" target="_blank">HTML table</a>.</li>
+                        <li>A basic understanding of <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> is required to prettify the HTML table.
+                    </ul>
+                </div>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    Using the hook
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        <li>
+                            To add a table to rearrange fields on a form, add a descriptive field to the form.
+                        </li>
+                        <li>
+                            In the Action Tag / Field Annotation, add @SHAZAM.
+                        </li>
+                        <li>
+                            Add the HTML code for the table in the field label of the descriptive field. Please make sure to remove any newlines from the HTML code; they are replaced by br elements and ruin your syntax.
+                            Shazam features:
+
+                            <ul>
+                                <li>
+                                    To move the value of a field into a span
+                                    <pre>
+&lt;span class="shazam"&gt;<i>field_name</i>&lt;/span&gt;</pre>
+                                    Where <i>field_name</i> is the variable name of the field.<br><br>
+                                </li>
+                                <li>
+                                    To move the label of a field (not the actual value) into a span
+                                    <pre>
+&lt;span class="shazam"&gt;<i>field_name</i>:label&lt;/span&gt;</pre>
+                                    Where <i>field_name</i> is the variable name of the field.<br><br>
+                                </li>
+                                <li>
+                                    To mirror the visibility of another field on the form
+                                    <pre>
+&lt;span shazam-mirror-visibility=<i>field_name</i>&gt;This will appear or hide with field_name&lt;/span&gt;</pre>
+                                    Where <i>field_name</i> is the variable name of the field.<br><br>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            The table can be prettified using Bootstrap.<br><br>
+                        </li>
+                        <li>
+                            <b>Example</b><br>
+                            On a form with variables <i>first_name</i> (variable label: First name) & <i>last_name</i> (variable label: Last name), the HTML code below (newlines have been added for readibility)
+                            <pre>
+&lt;table shazam-mirror-visibility='last_name'&gt;
+&emsp;&lt;tr&gt;
+&emsp;&emsp;&lt;td&gt;&lt;span class='shazam'&gt;last_name:label&lt;/span&gt;&lt;/td&gt;
+&emsp;&emsp;&lt;td&gt;&lt;span class='shazam'&gt;last_name&lt;/span&gt;&lt;/td&gt;
+&emsp;&emsp;&lt;td&gt;&lt;span class='shazam'&gt;first_name:label&lt;/span&gt;&lt;/td&gt;
+&emsp;&emsp;&lt;td&gt;&lt;span class='shazam'&gt;first_name&lt;/span&gt;&lt;/td&gt;
+&emsp;&lt;/tr&gt;
+&lt;/table&gt;</pre>
+                            Will result in a table similar to the one below
+                            <div class="well well-sm">
+                                <table>
+                                    <tr>
+                                        <td><b>Last name</b></td>
+                                        <td><input type="text"></td>
+                                        <td><b>First name</b></td>
+                                        <td><input type="text"></td>
+                                    </tr>
+                                </table>                                
+                            </div>
+                            Which will only be visible if the <i>last_name</i> field would normally be visible.<br>
+                            The table can subsequently be prettified using Bootstrap, e.g. by adding the class <i>table-condensed</i> to the table element.
+                            <div class="well well-sm">
+                                <table class="table-condensed">
+                                    <tr>
+                                        <td><b>Last name</b></td>
+                                        <td><input type="text"></td>
+                                        <td><b>First name</b></td>
+                                        <td><input type="text"></td>
+                                    </tr>
+                                </table>                                
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

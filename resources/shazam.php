@@ -125,7 +125,7 @@ $(document).ready(function() {
                     $(this).html($(real_label).clone()).addClass('shazam_label');
                 } else {
                     var real_data = $("td.data", $(real_tr));
-                    if (! $(real_data).size()) real_data = $("td:last", $(real_tr)); // changed to last to handle left alignment
+                    if (! $(real_data).size()) real_data = $("td:first", $(real_tr));
                     //var trInputs = $(":input", $(real_tr)).parentsUntil('td.data');
                     if ($(real_data).size()) {
                         var trInputs = $("input[type!='hidden']", $(real_data)).each(function() {
@@ -147,7 +147,7 @@ $(document).ready(function() {
                         //console.log (r);	 	//.css('text-align','left');
 
                         // Move it to the td cell
-                        $(this).html($(real_data).children());
+                        $(this).html($(real_data).children(':not(table)'));
 
                         // Hide the source TRs. (two methods here)
                         // $(real_tr).css('display','none'); // This doesn't work because if

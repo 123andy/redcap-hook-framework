@@ -4,7 +4,7 @@
 
     This is a hook utility function that allows the rearrangement of input elements on a page, for example in a html table of a descriptive field.
 
-    Currently, each elemnt you wish to pipe a field into should be
+    Currently, each element you wish to pipe a field into should be
 
     <span class='shazam'>field_name</span> will move the field_name input into this span
     <span class='shazam'>field_name:label</span> will just copy the label for the field called field_name and not the actual inputs.

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Noneoftheabove howto guide</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1><span class="glyphicon glyphicon-info-sign"></span> How to use the noneoftheabove hook</h1>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Purpose
+                </div>
+                <div class="panel-body">
+                    This hook allows you to prevent multiple selections of checkbox values when one is marked as a 'none of the above' option.
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Prerequisites
+                </div>
+                <div class="panel-body">
+                    None
+                </div>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    Using the hook
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        <li>Create a field with the required choices, including an option equivalent to 'none of the above'.</li>
+                        <li>In the <b>Action Tags / Field Annotation</b><br>
+                            Add the @NONEOFTHEABOVE={value} annotation (no quotes around {value})<br>
+                            With {value} being the code of the 'none of the above' choice.
+                        </li>
+                        <li>
+                            <b>Example</b><br>
+                            <i>Checkbox choices</i><br>
+                            <pre>
+1, Apples
+2, Bananas
+3, Cherries
+98, None of the Above</pre>
+                            <i>Action Tags / Field Annotation</i><br>
+                            <pre>@NONEOFTHEABOVE=98</pre>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

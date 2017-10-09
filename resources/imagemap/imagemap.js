@@ -59,7 +59,7 @@ function renderImageMap(params) {
 	//console.log('note');console.log($(note));
 	
 	// Get Label
-	var label = $('td.label:last', tr);
+	var label = $('td.labelrc:last', tr);
 	//console.log('label');console.log($(label));
 
 	// Get Data (not always present - depends on rendering options)

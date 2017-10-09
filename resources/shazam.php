@@ -1,81 +1,73 @@
 <?php
-
+	
 /**
+	This is a hook utility function that allows the rearrangement of input elements on a page, for example in a html table of a descriptive field.
+	Currently, each element you wish to pipe a field into should be
 
-    This is a hook utility function that allows the rearrangement of input elements on a page, for example in a html table of a descriptive field.
+	<span class='shazam'>field_name</span> will move the field_name input into this span
+	<span class='shazam'>field_name:label</span> will just copy the label for the field called field_name and not the actual inputs.
 
-    Currently, each element you wish to pipe a field into should be
-
-    <span class='shazam'>field_name</span> will move the field_name input into this span
-    <span class='shazam'>field_name:label</span> will just copy the label for the field called field_name and not the actual inputs.
-
-    If you want an element to mirror the visibility of another REDCap field, you can do:
-    <span shazam-mirror-visibility=field_name>This will appear or hide with field_name</span>
+	If you want an element to mirror the visibility of another REDCap field, you can do:
+	<span shazam-mirror-visibility=field_name>This will appear or hide with field_name</span>
 
 
-    Example:
+	Example:
 
-    A descriptive field that contains the following HTML in the label and '@SHAZAM' in the field annotation box
+	A descriptive field that contains the following HTML in the label and '@SHAZAM' in the field annotation box
 
-    <table style='width:100%; table-layout:fixed;border-collapse: collapse;'>
-        <tr>
-            <th style='width:16%;'></th
-            <th style='width:16%;'><b>Dose</b></th>
-            <th style='width:16%;'><b>Freq</b></th>
-            <th style='width:16%;'><b>Route</b></th>
-            <th style='width:32%;'><b>Totals</b></th>
-        </tr>
-        <tr shazam-mirror-visibility='dopa_dose' style='border-top: 1px dotted #ccc;'>
-            <td><b>Dopamine</b></td>
-            <td class='shazam'>dopa_dose</td>
-            <td class='shazam'>dopa_freq</td>
-            <td class='shazam'>dopa_route</td>
-            <td>
-                <table style='width:100%'>
-                    <tr>
-                        <td class='shazam'>dopa_total_daily</td>
-                        <td><span class='note'>mg/day</span></td>
-                    </tr>
-                    <tr>
-                        <td class='shazam'>dopa_total_weight</td>
-                        <td><span class='note'>mg/kg/day</span></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+	<table style='width:100%; table-layout:fixed;border-collapse: collapse;'>
+		<tr>
+			<th style='width:16%;'></th
+			<th style='width:16%;'><b>Dose</b></th>
+			<th style='width:16%;'><b>Freq</b></th>
+			<th style='width:16%;'><b>Route</b></th>
+			<th style='width:32%;'><b>Totals</b></th>
+		</tr>
+		<tr shazam-mirror-visibility='dopa_dose' style='border-top: 1px dotted #ccc;'>
+			<td><b>Dopamine</b></td>
+			<td class='shazam'>dopa_dose</td>
+			<td class='shazam'>dopa_freq</td>
+			<td class='shazam'>dopa_route</td>
+			<td>
+				<table style='width:100%'>
+					<tr>
+						<td class='shazam'>dopa_total_daily</td>
+						<td><span class='note'>mg/day</span></td>
+					</tr>
+					<tr>
+						<td class='shazam'>dopa_total_weight</td>
+						<td><span class='note'>mg/kg/day</span></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
 
-    Andrew Martin
-    Stanford University
-
+	Andrew Martin
+	Stanford University
 **/
-
 $term = '@SHAZAM';
 hook_log("Starting $term for project $project_id", "DEBUG");
-
 ///////////////////////////////
 //	Enable hook_functions and hook_fields for this plugin (if not already done)
 if (!isset($hook_functions)) {
-    $file = HOOK_PATH_FRAMEWORK . 'resources/init_hook_functions.php';
-    if (file_exists($file)) {
-        include_once $file;
-
-        // Verify it has been loaded
-        if (!isset($hook_functions)) { hook_log("ERROR: Unable to load required init_hook_functions."); return; }
-    } else {
-        hook_log ("ERROR: In Hooks - unable to include required file $file while in " . __FILE__);
-    }
+	$file = HOOK_PATH_FRAMEWORK . 'resources/init_hook_functions.php';
+	if (file_exists($file)) {
+		include_once $file;
+		
+		// Verify it has been loaded
+		if (!isset($hook_functions)) { hook_log("ERROR: Unable to load required init_hook_functions."); return; }
+	} else {
+		hook_log ("ERROR: In Hooks - unable to include required file $file while in " . __FILE__);
+	}
 }
 
 // See if the term defined in this hook is used on this page
 if (!isset($hook_functions[$term])) {
-    hook_log ("Skipping $term on $instrument of $project_id - not used.", "DEBUG");
-    return;
+	hook_log ("Skipping $term on $instrument of $project_id - not used.", "DEBUG");
+	return;
 }
 //////////////////////////////
-
-
-
 ?>
 
 <script type='text/javascript'>
@@ -232,30 +224,30 @@ function getFieldLabel(field_name) {
 // Parse text for fields / options
 // \[(?<field>[a-z\d_]+)(?:\:)?(?<option>[a-z\d_]+)?\]
 function parseFieldOptions(obj) {
-    var text = obj.nodeValue;
-
-    var re = /\{([a-z\d_]+)(?:\:)?([a-z\d_]+)?\}/gm;
-    //var re = /\[([a-z\d_]+)(?:\:)?([a-z\d_]+)?\]/gm;
-    //var re = /\[(?<field>[a-z\d_]+)(?:\:)?(?<option>[a-z\d_]+)?\]/gm;
-    while (match = re.exec(text)) {
-        var field = match[1];
-        var option = match[2];
-
-        if (option == 'label') {
-            // Get the field's label and place it into this spot
-            //console.log ('looking for ' + field);
-            if (label = getFieldLabel(field)) {
-                //console.log ('Found label:');
-                //console.log (label);
-                // Substitue out the match for the label
-                return label;
-            }
-        }
-        //console.log ('asdf');
-        //console.log('Match: ' + match.length + ' / ' + field + ' / ' + option);
-        //console.log(match);
-    }
-    //return match;
+	var text = obj.nodeValue;
+	
+	var re = /\{([a-z\d_]+)(?:\:)?([a-z\d_]+)?\}/gm;
+	//var re = /\[([a-z\d_]+)(?:\:)?([a-z\d_]+)?\]/gm;
+	//var re = /\[(?<field>[a-z\d_]+)(?:\:)?(?<option>[a-z\d_]+)?\]/gm;
+	while (match = re.exec(text)) {
+		var field = match[1];
+		var option = match[2];
+		
+		if (option == 'label') {
+			// Get the field's label and place it into this spot
+			//console.log ('looking for ' + field);
+			if (label = getFieldLabel(field)) {
+				//console.log ('Found label:');
+				//console.log (label);
+				// Substitue out the match for the label
+				return label;
+			}
+		}
+		//console.log ('asdf');
+		//console.log('Match: ' + match.length + ' / ' + field + ' / ' + option);
+		//console.log(match);
+	}
+	//return match;
 }
 
 </script>

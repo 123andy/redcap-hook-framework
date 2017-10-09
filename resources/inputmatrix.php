@@ -62,7 +62,7 @@ $(document).ready(function() {
 		$(note).text($(note).text().replace('<?php echo $term ?>', ''));
 		
 		// Get table in label
-		var t = $('td.label table.inputmatrix', tr);
+		var t = $('td.labelrc table.inputmatrix', tr);
 		
 		// Remove the br's that REDCap inserts before the table
 		$(t).siblings('br').remove();

@@ -14,7 +14,7 @@
 	- hooks
 	
 	Inside the hooks directory you need two folders:
-	- framework: This is intended to be this repository.  It is the 'source code' and houses the generic hook functions and utlities.
+	- framework: This is intended to be this repository.  It is the 'source code' and houses the generic hook functions and utilities.
 	- server: This is the server-specific configuration of your hooks.  This can be in a separate repository on a per-server basis and is NOT checked into the public repo.
 
 	Inside /hooks/framework/ lies the redcap_hooks.php file.  This is the hook configuration file and must be linked from inside the REDCap

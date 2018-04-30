@@ -79,21 +79,21 @@ function redcap_custom_verify_username($username) {
 
 
 // redcap_data_entry_form (REDCap >= 5.11.0)
-function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance = 1) {
+function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $group_id = null, $repeat_instance = 1) {
 	$hook_event = __FUNCTION__;
 	foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
 }
 
 
 // redcap_data_entry_form_top (REDCap >= 6.8.0)
-function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance = 1) {
+function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id, $group_id = null, $repeat_instance = 1) {
 	$hook_event = __FUNCTION__;
 	foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
 }
 
 
 // redcap_every_page_top (REDCap >= 6.14.0)
-function redcap_every_page_top($project_id)
+function redcap_every_page_top($project_id = null)
 {
         $hook_event = __FUNCTION__;
         foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
@@ -116,35 +116,35 @@ function redcap_project_home_page($project_id) {
 
 
 // redcap_save_record (REDCap >= 5.11.0)
-function redcap_save_record($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance = 1) {
+function redcap_save_record($project_id, $record = null, $instrument, $event_id, $group_id = null, $survey_hash = null, $response_id = null, $repeat_instance = 1) {
 	$hook_event = __FUNCTION__;
 	foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
 }
 
 
 // redcap_survey_complete (REDCap >= 5.11.0)
-function redcap_survey_complete($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance = 1) {
+function redcap_survey_complete($project_id, $record = null, $instrument, $event_id, $group_id = null, $survey_hash = null, $response_id = null, $repeat_instance = 1) {
 	$hook_event = __FUNCTION__;
 	foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
 }
 
 
 // redcap_survey_page (REDCap >= 5.11.0)
-function redcap_survey_page($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance = 1) {
+function redcap_survey_page($project_id, $record = null, $instrument, $event_id, $group_id = null, $survey_hash = null, $response_id = null, $repeat_instance = 1) {
 	$hook_event = __FUNCTION__;
 	foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
 }
 
 
 // redcap_survey_page_top (REDCap >= 6.8.0)
-function redcap_survey_page_top($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance = 1) {
+function redcap_survey_page_top($project_id, $record = null, $instrument, $event_id, $group_id = null, $survey_hash = null, $response_id = null, $repeat_instance = 1) {
 	$hook_event = __FUNCTION__;
 	foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
 }
 
 
 // redcap_user_rights (REDCap >= 5.11.0)
-function redcap_user_rights($project_id) {
+function redcap_user_rights($project_id = null) {
 	$hook_event = __FUNCTION__;
 	foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
 }

@@ -157,7 +157,7 @@ $(document).ready(function() {
             // Find the 'real tr' for the field to be relocated
             var real_tr = $("tr[sq_id='" + field + "']");
             // Make sure field is present on page
-            if ($(real_tr).size()) {
+            if ($(real_tr).length) {
                 // Check for label option
                 if (option == 'label') {
                     //Only copying the label
@@ -168,9 +168,9 @@ $(document).ready(function() {
                 } else {
                     // MOVE IT
                     var real_data = $("td.data", $(real_tr));
-                    if (! $(real_data).size()) real_data = $("td:last", $(real_tr)); // changed to last to handle left alignment
+                    if (! $(real_data).length) real_data = $("td:last", $(real_tr)); // changed to last to handle left alignment
                     //var trInputs = $(":input", $(real_tr)).parentsUntil('td.data');
-                    if ($(real_data).size()) {
+                    if ($(real_data).length) {
                         var trInputs = $("input[type!='hidden']", $(real_data)).each(function() {
                             var type = $(this).prop('type');
                             //console.log ('Type: ' + type);
@@ -209,7 +209,7 @@ $(document).ready(function() {
             var real_tr = $("tr[sq_id='" + field + "']");
 
             // Make sure field is present on page
-            if ($(real_tr).size()) {
+            if ($(real_tr).length) {
                                 // Do an initial sync of the visibilty
                 if ($(real_tr).is(':visible')) {
                     $(mirrored_element).show();
@@ -245,7 +245,7 @@ $(document).ready(function() {
 function getFieldLabel(field_name) {
     // Search for a tr element with the id from the th cell
     var real_tr = $("tr[sq_id='" + field_name + "']");
-    if ($(real_tr).size()) {
+    if ($(real_tr).length) {
         // Get the label
         var real_label = $("td.label:not(.quesnum):not(.questionnum) td:first", $(real_tr));
         // Move the label into the table and add a 'label' class for rendering

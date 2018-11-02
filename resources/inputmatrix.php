@@ -75,7 +75,7 @@ $(document).ready(function() {
 			
 			// Search for a tr element with the id from the th cell
 			var real_tr = $("tr[sq_id='" + th_label + "']");
-			if ($(real_tr).size()) {
+			if ($(real_tr).length) {
 				// Get the label
 				var real_label = $("td.labelrc:not(.quesnum):not(.questionnum)", $(real_tr));
 				// Move the label into the table and add a 'label' class for rendering
@@ -95,11 +95,11 @@ $(document).ready(function() {
 		
 			// Search for a tr element with the id from the td cell
 			var real_tr = $("tr[sq_id='" + td_label + "']");
-			if ($(real_tr).size()) {
+			if ($(real_tr).length) {
 				// Get the input
 				//console.log('Found ' + td_label);
 				var trInputs = $(":input", $(real_tr));
-				if ($(trInputs).size()) {
+				if ($(trInputs).length) {
 					//console.log(trInputs);
 					var type = $(trInputs).prop('type');
 					

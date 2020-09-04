@@ -64,14 +64,14 @@ function redcap_add_edit_records_page ($project_id, $instrument, $event_id) {
 }
 
 
-// redcap_add_edit_records_page (REDCap >= 5.11.0)
+// redcap_control_center (REDCap >= 5.11.0)
 function redcap_control_center() {
 	$hook_event = __FUNCTION__;
 	foreach (get_hook_include_files($hook_event) as $script) include $script;
 }
 
 
-// redcap_add_edit_records_page (REDCap >= 5.8.0)
+// redcap_custom_verify_username (REDCap >= 5.8.0)
 function redcap_custom_verify_username($username) {
 	$hook_event = __FUNCTION__;
 	foreach (get_hook_include_files($hook_event) as $script) include $script;
@@ -92,6 +92,12 @@ function redcap_data_entry_form_top($project_id, $record, $instrument, $event_id
 }
 
 
+// redcap_email (REDCap >= 9.5.0)
+function redcap_email( string $to, string $from, string $subject, string $message, string $cc = NULL, string $bcc = NULL, string $fromName = NULL, array $attachments = NULL ) {
+  $hook_event = __FUNCTION__;
+  foreach (get_hook_include_files($hook_event) as $script) include $script;
+}
+
 // redcap_every_page_top (REDCap >= 6.14.0)
 function redcap_every_page_top($project_id = null)
 {
@@ -108,6 +114,13 @@ function redcap_every_page_before_render($project_id = null)
 }
 
 
+// redcap_pdf (REDCap >= 9.5.0)
+function redcap_pdf( int $project_id, array $metadata, array $data, string $instrument = NULL, string $record = NULL, int $event_id = NULL, int $instance = 1 ) {
+  $hook_event = __FUNCTION__;
+  foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
+}
+
+
 // redcap_project_home_page (REDCap >= 6.9.0)
 function redcap_project_home_page($project_id) {
 	$hook_event = __FUNCTION__;
@@ -119,6 +132,13 @@ function redcap_project_home_page($project_id) {
 function redcap_save_record($project_id, $record = null, $instrument, $event_id, $group_id = null, $survey_hash = null, $response_id = null, $repeat_instance = 1) {
 	$hook_event = __FUNCTION__;
 	foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
+}
+
+
+// redcap_survey_acknowledgement_page (REDCap >= 10.2.0)
+function redcap_survey_acknowledgement_page( int $project_id, string $record = NULL, string $instrument, int $event_id, int $group_id = NULL, string $survey_hash, int $response_id = NULL, int $repeat_instance = 1 ) {
+  $hook_event = __FUNCTION__;
+  foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
 }
 
 
@@ -155,4 +175,4 @@ function redcap_user_rights($project_id = null) {
 
 /////////////////////////////////////
 
-hook_log("------------ redcap_hooks loaded ------------", "DEBUG");
+// hook_log("------------ redcap_hooks loaded ------------", "DEBUG");

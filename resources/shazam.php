@@ -17,7 +17,7 @@
 
 	<table style='width:100%; table-layout:fixed;border-collapse: collapse;'>
 		<tr>
-			<th style='width:16%;'></th
+			<th style='width:16%;'></th>
 			<th style='width:16%;'><b>Dose</b></th>
 			<th style='width:16%;'><b>Freq</b></th>
 			<th style='width:16%;'><b>Route</b></th>

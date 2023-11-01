@@ -151,6 +151,37 @@ function redcap_user_rights($project_id = null) {
 
 // INSERT ADDITONAL HOOKS HERE AS THEY ARE DEVELOPED HERE
 
+// These next three hooks were added based on comment from Luke Stevens from
+// this post: https://redcap.vanderbilt.edu/community/post.php?id=141186&comment=141238
+
+// REDCAP_PDF
+function redcap_pdf($project_id, &$metadata, &$data, $instrument=null, $record=null, $event_id=null, $instance=1)
+{
+    $hook_event = __FUNCTION__;
+    foreach (get_hook_include_files($hook_event) as $script) include $script; // which can modify $metadata and/or $data
+}
+ 
+// REDCAP_EMAIL
+function redcap_email($to, $from, $subject, $message, $cc, $bcc, $fromName, $attachments)
+{
+    // You may want to send out emails via an alternative method or configuration,
+    // OR maybe change something in a particular email based on some decision logic.
+ 
+    // If this hook function returns FALSE or 0, that will prevent REDCap's email function from sending the email using the normal method.
+    // If anything other than FALSE or 0 is returned (including not returning anything), REDCap will proceed with sending the email as usual.
+    $hook_event = __FUNCTION__;
+    $send = true;
+    foreach (get_hook_include_files($hook_event) as $script) {
+        include $script; // which can modify $send
+        if (!$send) { break; }
+    }
+    return $send;
+}
+ 
+function redcap_survey_acknowledgement_page($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
+    $hook_event = __FUNCTION__;
+    foreach (get_hook_include_files($hook_event, $project_id) as $script) include $script;
+}
 
 
 /////////////////////////////////////
